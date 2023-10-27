@@ -1,0 +1,47 @@
+[
+    {
+        "questNo": "1",
+        "question":
+            "When a gas jar full of air is placed upside down on a gas jar full of bromine vapours, the red-brown vapours of bromine from the lower jar go upward into the jar containing air. In this experiment:",
+        "option_A": "Air is heavier than bromine",
+        "option_B": "Both air and bromine have the same density",
+        "option_C": "Bromine is heavier than air",
+        "option_D": "Bromine cannot be heavier than air because it is going upwards against gravity",
+        "correctAns": "C",
+        "submittedAns": "",
+        "isMarked": false
+      },
+      {
+        "questNo": "2",
+        "question": " When water at 0°C freezes to form ice at the same temperature of 0°C, then it:",
+        "option_A": "Absorbs some heat",
+        "option_B": "Releases some heat",
+        "option_C": "Neither absorbs nor releases heat",
+        "option_D": "Absorbs exactly 3.34 x 105J/kg of heat",
+        "correctAns": "B",
+        "submittedAns": "",
+        "isMarked": false
+      },
+      {
+        "questNo": "3",
+        "question": "The evaporation of a liquid can best be carried out in a:",
+        "option_A": "Flask",
+        "option_B": "China dish",
+        "option_C": "T est tube",
+        "option_D": "Beaker",
+        "correctAns": "B",
+        "submittedAns": "",
+        "isMarked": false
+      },
+      {
+        "questNo": "4",
+        "question": "Zig-zag movement of the solute particle in a solution is known as",
+        "option_A": "Linear motion",
+        "option_B": "Circular motion",
+        "option_C": "Brownian motion",
+        "option_D": "Curved motion",
+        "correctAns": "C",
+        "submittedAns": "",
+        "isMarked": false
+      }
+]

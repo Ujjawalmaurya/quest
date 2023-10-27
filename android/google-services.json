@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "522584603956",
+    "project_id": "quest-4ba24",
+    "storage_bucket": "quest-4ba24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522584603956:android:a8152124dfc82edfeeb961",
+        "android_client_info": {
+          "package_name": "com.example.quest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522584603956-ngmglqqdqotq54t2m0u7c6qd08tjcu1j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdHMqOYRL4Snex-bgiFEaho8ymenognQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522584603956-ngmglqqdqotq54t2m0u7c6qd08tjcu1j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
