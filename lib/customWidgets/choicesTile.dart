@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:quest/customWidgets/snackbar.dart';
 
 class ChoiceTile extends StatelessWidget {
   final String choice;

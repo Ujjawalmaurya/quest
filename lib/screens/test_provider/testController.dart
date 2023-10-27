@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quest/test_provider/test.dart';
+import 'package:quest/customWidgets/colorMEans.dart';
+import 'package:quest/screens/test_provider/testScreen.dart';
 
 class TestController extends GetxController {
   //
@@ -78,6 +79,73 @@ class TestController extends GetxController {
       "correctAns": "C",
       "submittedAns": "",
       'isMarked': false
+    },
+    {
+      "questNo": "5",
+      "question": "CO2 can be easily liquified and even solidified because",
+      "option_A": "It has weak forces of attraction",
+      "option_B": "It has comparatively more force of attraction than other gases",
+      "option_C": "It has more intermolecular space",
+      "option_D": "It is present in atmosphere.",
+      "correctAns": "B",
+      "submittedAns": "",
+      "isMarked": false
+    },
+    {
+      "questNo": "6",
+      "question":
+          " A few substances are arranged in the increasing order of ‘forces of attraction’ between their particles. Which one of the following represents a correct arrangement?",
+      "option_A": "Water, air, wind",
+      "option_B": "Air, sugar, oil",
+      "option_C": "Oxygen, water, sugar",
+      "option_D": "Salt, juice, air",
+      "correctAns": "C",
+      "submittedAns": "",
+      "isMarked": false
+    },
+    {
+      "questNo": "7",
+      "question": "Which of the following phenomena always results in the cooling effect?",
+      "option_A": "Condensation",
+      "option_B": "Evaporation",
+      "option_C": "Sublimation",
+      "option_D": "None of these",
+      "correctAns": "B",
+      "submittedAns": "",
+      "isMarked": false
+    },
+    {
+      "questNo": "8",
+      "question": "The colour of vapours formed on sublimation of iodine solid is:",
+      "option_A": "Purple (violet)",
+      "option_B": "Colourless",
+      "option_C": "Yellow",
+      "option_D": "Orange",
+      "correctAns": "A",
+      "submittedAns": "",
+      "isMarked": false
+    },
+    {
+      "questNo": "9",
+      "question": "A gas which obeys the gas laws is known as:",
+      "option_A": "An ideal gas",
+      "option_B": "A heavier gas",
+      "option_C": "A lighter gas",
+      "option_D": "A real gas",
+      "correctAns": "A",
+      "submittedAns": "",
+      "isMarked": false
+    },
+    {
+      "questNo": "10",
+      "question": "What’s the term used to describe the phase change as a liquid becomes a solid?",
+      "option_A": "Evaporation",
+      "option_B": "Condensation",
+      "option_C": "Freezing",
+      "option_D": "None of the above",
+      "correctAns": "C",
+      "submittedAns": "",
+      "isMarked": false
     },
   ];
 
@@ -165,47 +233,52 @@ class TestController extends GetxController {
         ),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: Text(
-                "Questions summary",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 25),
-              child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: testMetaData.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
-                itemBuilder: (BuildContext context, int i) {
-                  return Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: GetBuilder<TestController>(
-                      init: TestController(),
-                      initState: (_) {},
-                      builder: (_) {
-                        return CircleAvatar(
-                          radius: 3,
-                          backgroundColor: _.testMetaData[i]["isMarked"]
-                              ? Colors.redAccent
-                              : _.testMetaData[i]["submittedAns"] != ''
-                                  ? Colors.green
-                                  : Colors.grey,
-                          child: Text(
-                            "${i + 1}",
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-                          ),
-                        );
-                      },
+            Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Text(
+                    "Questions summary",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 25),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: testMetaData.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
+                    itemBuilder: (BuildContext context, int i) {
+                      return Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: GetBuilder<TestController>(
+                          init: TestController(),
+                          initState: (_) {},
+                          builder: (_) {
+                            return CircleAvatar(
+                              radius: 3,
+                              backgroundColor: _.testMetaData[i]["isMarked"]
+                                  ? Colors.redAccent
+                                  : _.testMetaData[i]["submittedAns"] != ''
+                                      ? Colors.green
+                                      : Colors.grey,
+                              child: Text(
+                                "${i + 1}",
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
+            const ColorMeanings(),
           ],
         ),
       ),

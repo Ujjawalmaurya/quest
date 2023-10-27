@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:get/get.dart';
 
 class RulesController extends GetxController {
@@ -5,19 +8,48 @@ class RulesController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    // Future.delayed(
+    //   const Duration(seconds: 5),
+    //   () {
+    //     Get.offNamed("/testScreen");
+    //   },
+    // );
     super.onInit();
   }
 
   @override
   void onReady() {
-    // TODO: implement onReady
+    // TODO:
+    startTimer();
     super.onReady();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    // TODO:
+    // timer.cancel();
+
     super.onClose();
   }
-}//class RulesController
+
+  late Timer? _timer;
+  RxInt duration = 10.obs;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        duration == 0
+            ? {
+                timer.cancel(),
+                Get.offNamed("/testScreen"),
+              }
+            : {
+                duration--,
+                log('* $duration', name: "==Timer=="),
+              };
+      },
+    );
+  }
+} //class RulesController

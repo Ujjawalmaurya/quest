@@ -20,12 +20,7 @@ class QuestAppTheme {
     brightness: _brightness,
     primaryColor: _primaryColor,
     primarySwatch: _primarySwatch,
-    // tabBarTheme: TabBarTheme(
-    //   labelColor: _primaryColor,
-    // ),
-    // drawerTheme: const DrawerThemeData(
-    //   elevation: 12,
-    // ),
+    useMaterial3: true,
     // cardTheme: CardTheme(
     //   elevation: 5,
     //   shape: RoundedRectangleBorder(
@@ -33,14 +28,8 @@ class QuestAppTheme {
     //   ),
     // ),
     appBarTheme: const AppBarTheme(
-      foregroundColor: Colors.white,
+      // foregroundColor: Colors.white,
       centerTitle: true,
-      // systemOverlayStyle: SystemUiOverlayStyle(
-      //   statusBarColor: _primarySwatch,
-      // systemNavigationBarContrastEnforced: true,
-      // systemNavigationBarColor: _primaryColor,
-      // systemNavigationBarDividerColor: Colors.yellowAccent,
-      // ),
     ),
     dividerTheme: const DividerThemeData(indent: 10, endIndent: 10),
     // Elevated Button
@@ -55,7 +44,7 @@ class QuestAppTheme {
         padding: const MaterialStatePropertyAll(
           EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         ),
-        foregroundColor: MaterialStateProperty.all(Colors.white),
+        // foregroundColor: MaterialStateProperty.all(Colors.white),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -64,17 +53,9 @@ class QuestAppTheme {
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         ),
-        padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 12, horizontal: 20)),
+        padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 14, horizontal: 22)),
       ),
     ),
-    // inputDecorationTheme: InputDecorationTheme(
-    //   suffixIconColor: Colors.blue.withOpacity(0.7),
-    //   isDense: true,
-    //   // activeIndicatorBorder: BorderSide(width: 2),
-    //   border: InputBorder.none,
-    //   outlineBorder: const BorderSide(width: 2, color: Colors.redAccent),
-    //   // fillColor: Colors.grey,
-    // ),
     inputDecorationTheme: InputDecorationTheme(
       fillColor: Colors.grey.withOpacity(0.1),
       filled: true,
@@ -90,6 +71,9 @@ class QuestAppTheme {
       labelStyle: TextStyle(
         color: _primarySwatch,
       ),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      circularTrackColor: Colors.amber,
     ),
   );
 

@@ -2,7 +2,7 @@ import 'dart:developer';
 
 // import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:quest/test_provider/testController.dart';
+import 'package:quest/screens/test_provider/testController.dart';
 
 class ResultController extends GetxController {
   //
@@ -11,6 +11,7 @@ class ResultController extends GetxController {
   int correct = 0;
   int attempt = 0;
   int notAnswered = 0;
+  RxBool isLoading = true.obs;
   //
   // int touchedIndex = -1;
 
@@ -25,7 +26,9 @@ class ResultController extends GetxController {
 
   @override
   void onReady() {
-    // TODO: implement onReady
+    Future.delayed(const Duration(seconds: 1), () {
+      isLoading.value = false;
+    });
     super.onReady();
   }
 

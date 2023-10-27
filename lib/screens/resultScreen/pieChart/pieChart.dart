@@ -13,7 +13,7 @@ class PieChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.0,
+      aspectRatio: 1.5,
       child: PieChart(
         PieChartData(
           // pieTouchData: PieTouchData(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quest/test_provider/testController.dart';
+import 'package:quest/screens/test_provider/testController.dart';
 import 'package:quest/customWidgets/choicesTile.dart';
 
 enum MCQ { a, b, c, d, notselected }
@@ -15,14 +15,14 @@ class TestScreen extends GetWidget<TestController> {
       appBar: AppBar(
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.textsms_sharp),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.dangerous),
-          ),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(Icons.textsms_sharp),
+          // ),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(Icons.dangerous),
+          // ),
           IconButton(
               onPressed: () => Get.find<TestController>().summarySheet(),
               icon: const Icon(Icons.pie_chart_outline_sharp)),

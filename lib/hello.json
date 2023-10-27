@@ -43,5 +43,72 @@
         "correctAns": "C",
         "submittedAns": "",
         "isMarked": false
+      },
+      {
+        "questNo": "5",
+        "question": "CO2 can be easily liquified and even solidified because",
+        "option_A": "It has weak forces of attraction",
+        "option_B": "It has comparatively more force of attraction than other gases",
+        "option_C": "It has more intermolecular space",
+        "option_D": "It is present in atmosphere.",
+        "correctAns": "B",
+        "submittedAns": "",
+        "isMarked": false
+      },
+      {
+        "questNo": "6",
+        "question": " A few substances are arranged in the increasing order of ‘forces of attraction’ between their particles. Which one of the following represents a correct arrangement?",
+        "option_A": "Water, air, wind",
+        "option_B": "Air, sugar, oil",
+        "option_C": "Oxygen, water, sugar",
+        "option_D": "Salt, juice, air",
+        "correctAns": "C",
+        "submittedAns": "",
+        "isMarked": false
+      },
+      {
+        "questNo": "7",
+        "question": "Which of the following phenomena always results in the cooling effect?",
+        "option_A": "Condensation",
+        "option_B": "Evaporation",
+        "option_C": "Sublimation",
+        "option_D": "None of these",
+        "correctAns": "B",
+        "submittedAns": "",
+        "isMarked": false
+      },
+      {
+        "questNo": "8",
+        "question": "The colour of vapours formed on sublimation of iodine solid is:",
+        "option_A": "Purple (violet)",
+        "option_B": "Colourless",
+        "option_C": "Yellow",
+        "option_D": "Orange",
+        "correctAns": "A",
+        "submittedAns": "",
+        "isMarked": false
+      },
+      {
+        "questNo": "9",
+        "question": "A gas which obeys the gas laws is known as:",
+        "option_A": "An ideal gas",
+        "option_B": "A heavier gas",
+        "option_C": "A lighter gas",
+        "option_D": "A real gas",
+        "correctAns": "A",
+        "submittedAns": "",
+        "isMarked": false
+      }
+      ,
+      {
+        "questNo": "10",
+        "question": "What’s the term used to describe the phase change as a liquid becomes a solid?",
+        "option_A": "Evaporation",
+        "option_B": "Condensation",
+        "option_C": "Freezing",
+        "option_D": "None of the above",
+        "correctAns": "C",
+        "submittedAns": "",
+        "isMarked": false
       }
 ]

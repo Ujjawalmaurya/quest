@@ -1,23 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:quest/screens/Home/homeController.dart';
 // import 'package:quest/Test/test.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends GetWidget<HomeController> {
   const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Home"),
+          title: const Text("Ongoing Quizes"),
         ),
-        body: const Listview()
+        body: Obx(
+          () => controller.isLoading.value
+              ? Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Getting Quiz info...",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(strokeWidth: 3),
+                    ),
+                  ],
+                ))
+              : Column(
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.all(4.0),
+                    //   child: Text(
+                    //     "Ongoing Quizes",
+                    //     style: Theme.of(context).textTheme.headlineSmall,
+                    //   ),
+                    // ),
+                    const Listview(),
+                  ],
+                ),
+        )
         // ListView.builder(
         //   itemCount: 10,
         //   itemBuilder: (context, index) => ListTile(
@@ -38,6 +64,7 @@ class Listview extends StatelessWidget {
     double _w = Get.width;
     return AnimationLimiter(
       child: ListView.builder(
+        shrinkWrap: true,
         padding: EdgeInsets.all(_w / 30),
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         itemCount: 5,
@@ -51,7 +78,8 @@ class Listview extends StatelessWidget {
               horizontalOffset: -300,
               verticalOffset: -850,
               child: InkWell(
-                onTap: () => Get.toNamed("/testScreen"),
+                // onTap: () => Get.toNamed("/testScreen"),
+                onTap: () => Get.toNamed("/rules"),
                 child: Container(
                   margin: EdgeInsets.only(bottom: _w / 20),
                   height: _w / 4,
