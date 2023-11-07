@@ -44,7 +44,7 @@ class QuestAppTheme {
         padding: const MaterialStatePropertyAll(
           EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         ),
-        // foregroundColor: MaterialStateProperty.all(Colors.white),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

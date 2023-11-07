@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quest/screens/test_provider/testController.dart';
@@ -7,7 +9,16 @@ enum MCQ { a, b, c, d, notselected }
 // enum SingingCharacter { lafayette, jefferson }
 
 class TestScreen extends GetWidget<TestController> {
-  const TestScreen({super.key});
+  TestScreen({super.key});
+
+  // TestController testCtr = Get.find<TestController>();
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    controller.instantSubmit();
+    controller.everResumed.value = true;
+    print('state = $state');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,40 +35,56 @@ class TestScreen extends GetWidget<TestController> {
           //   icon: const Icon(Icons.dangerous),
           // ),
           IconButton(
-              onPressed: () => Get.find<TestController>().summarySheet(),
-              icon: const Icon(Icons.pie_chart_outline_sharp)),
+            onPressed: () => Get.find<TestController>().summarySheet(),
+            icon: const Icon(Icons.pie_chart_outline_sharp),
+          ),
         ],
         title: GetBuilder<TestController>(
           init: TestController(),
           initState: (_) {},
           builder: (_) {
-            return Text("Questions ${_.currentIndex + 1}/${_.testMetaData.length}");
+            return const Text(
+              // "Questions ${_.currentIndex + 1}/${_.testMetaData.length}",
+              "Questions",
+              // style: Theme.of(context).textTheme.bodyLarge,
+            );
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Card(
+                  elevation: 8,
                   margin: const EdgeInsets.all(6),
                   child: GetBuilder<TestController>(
                     init: TestController(),
                     initState: (_) {},
                     builder: (_) {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Question ${_.testMetaData[_.currentIndex]["questNo"]}: \n ${_.testMetaData[_.currentIndex]["question"]}",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                            // letterSpacing: 0.5,
-                          ),
+                        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Question ${_.testMetaData[_.currentIndex]["questNo"]}:",
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                            Text(
+                              "${_.testMetaData[_.currentIndex]["question"]}",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                                // letterSpacing: 0.5,
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
@@ -68,9 +95,10 @@ class TestScreen extends GetWidget<TestController> {
                   initState: (_) {},
                   builder: (_) {
                     return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      elevation: 8,
+                      margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
                         child: Column(
                           children: [
                             ChoiceTile(
@@ -97,24 +125,6 @@ class TestScreen extends GetWidget<TestController> {
                               onChanged: (_val) => _.updateMCQSelection(_val),
                               choice: "(D) ${_.testMetaData[_.currentIndex]['option_D']}",
                             ),
-                            // Radio(
-                            //   value: SingingCharacter.jefferson,
-                            //   groupValue: _.character,
-                            //   onChanged: (val) {
-                            //     setState(() {
-                            //       _.character = val;
-                            //     });
-                            //   },
-                            // ),
-                            // Radio(
-                            //   value: SingingCharacter.lafayette,
-                            //   groupValue: _.character,
-                            //   onChanged: (val) {
-                            //     setState(() {
-                            //       _.character = val;
-                            //     });
-                            //   },
-                            // ),
                           ],
                         ),
                       ),
@@ -123,41 +133,42 @@ class TestScreen extends GetWidget<TestController> {
                 )
               ],
             ),
-            // Expanded(
-            //   child: ListView.builder(
-            //       scrollDirection: Axis.horizontal,
-            //       itemCount: 30,
-            //       itemBuilder: (context, index) {
-            //         return const Card(
-            //           color: Colors.blueAccent,
-            //           child: Text("data"),
-            //         );
-            //       }),
-            // )
-            GetBuilder<TestController>(
-              init: TestController(),
-              initState: (_) {},
-              builder: (_) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                        style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.red)),
-                        onPressed: () {
-                          _.mark();
-                        },
-                        child: const Text("Mark for review")),
-                    ElevatedButton(
-                        style:
-                            const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.greenAccent)),
-                        onPressed: () => _.next(),
-                        child: const Text("Next")),
-                  ],
-                );
-              },
-            )
-          ],
-        ),
+          ),
+          GetBuilder<TestController>(
+            init: TestController(),
+            initState: (_) {},
+            builder: (_) => Padding(
+              padding: const EdgeInsets.all(28.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(Colors.red),
+                    ),
+                    onPressed: () => _.mark(),
+                    child: const Text(
+                      "Mark for review",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(Colors.greenAccent),
+                    ),
+                    onPressed: () => _.next(),
+                    child: const Text(
+                      "Next",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

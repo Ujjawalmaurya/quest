@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:get/get.dart';
 
 class RulesController extends GetxController {
   //
 
   @override
-  void onInit() {
+  void onInit() async {
     // Future.delayed(
     //   const Duration(seconds: 5),
     //   () {
@@ -33,7 +32,7 @@ class RulesController extends GetxController {
   }
 
   late Timer? _timer;
-  RxInt duration = 10.obs;
+  RxInt duration = 5.obs;
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);

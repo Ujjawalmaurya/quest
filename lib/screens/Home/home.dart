@@ -17,32 +17,35 @@ class HomePage extends GetWidget<HomeController> {
           () => controller.isLoading.value
               ? Center(
                   child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Getting Quiz info...",
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(strokeWidth: 3),
-                    ),
-                  ],
-                ))
-              : Column(
-                  children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.all(4.0),
-                    //   child: Text(
-                    //     "Ongoing Quizes",
-                    //     style: Theme.of(context).textTheme.headlineSmall,
-                    //   ),
-                    // ),
-                    const Listview(),
-                  ],
-                ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Getting Quiz info...",
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 3),
+                      ),
+                    ],
+                  ),
+                )
+              :
+              // : Column(
+              //     mainAxisSize: MainAxisSize.max,
+              //     children: [
+              // Padding(
+              //   padding: const EdgeInsets.all(4.0),
+              //   child: Text(
+              //     "Ongoing Quizes",
+              //     style: Theme.of(context).textTheme.headlineSmall,
+              //   ),
+              // ),
+              const Listview(),
+          //   ],
+          // ),
         )
         // ListView.builder(
         //   itemCount: 10,
@@ -64,10 +67,10 @@ class Listview extends StatelessWidget {
     double _w = Get.width;
     return AnimationLimiter(
       child: ListView.builder(
-        shrinkWrap: true,
+        // shrinkWrap: true,
         padding: EdgeInsets.all(_w / 30),
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        itemCount: 5,
+        itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
           return AnimationConfiguration.staggeredList(
             position: index,

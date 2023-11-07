@@ -22,4 +22,4 @@ class HomeController extends GetxController {
     super.onClose();
   }
   //
-} // HomeController Ends here
+} // 

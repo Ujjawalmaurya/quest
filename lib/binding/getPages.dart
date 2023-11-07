@@ -26,7 +26,7 @@ class GetPages {
     GetPage(
       name: '/testScreen',
       // transition: secondaryTransition,
-      page: () => const TestScreen(),
+      page: () => TestScreen(),
       binding: TestBinding(),
     ),
     GetPage(

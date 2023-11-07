@@ -21,26 +21,37 @@ class Rules extends GetWidget<RulesController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Text('Rules', style: headerTxtStyle),
+                  child: Text(
+                    'Rules',
+                    style: headerTxtStyle,
+                  ),
                 ),
                 Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text('1 - Screenshots and Recording is NOT allowed.', style: bodyTxtStyle),
+                      child: Text(
+                        '1 - Screenshots and Recording is NOT allowed.',
+                        style: bodyTxtStyle,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text('2 - Switching and closing app will SUBMIT Quiz with existing answers',
-                          style: bodyTxtStyle),
+                      child: Text(
+                        '2 - Switching and closing app will SUBMIT Quiz with existing answers',
+                        style: bodyTxtStyle,
+                      ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(5.0),
+                    //   child: Text('3 - Keep an eye on Remaining TIME if it have', style: bodyTxtStyle),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text('3 - Keep an eye on Remaining TIME if it have', style: bodyTxtStyle),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text('4 - Answers CAN be changed before submission only.', style: bodyTxtStyle),
+                      child: Text(
+                        '3 - Answers CAN be changed before submission only.',
+                        style: bodyTxtStyle,
+                      ),
                     ),
                   ],
                 ),
@@ -50,8 +61,18 @@ class Rules extends GetWidget<RulesController> {
                     child: OutlinedButton(
                       onPressed: () {},
                       child: Obx(
-                        () =>
-                            Text("Test will start automatically after ${controller.duration.value} seconds"),
+                        () => Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text("Test will start automatically after"),
+                            Text(
+                              "${controller.duration.value}",
+                              style: Theme.of(context).textTheme.displayMedium,
+                            ),
+                            const Text("Seconds"),
+                          ],
+                        ),
                       ),
                     ),
                   ),

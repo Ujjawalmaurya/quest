@@ -1,36 +1,31 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
 import 'package:quest/customWidgets/colorMEans.dart';
 import 'package:quest/screens/test_provider/testScreen.dart';
 
 class TestController extends GetxController {
-  //
-  // FirebaseDatabase database = FirebaseDatabase.instance;
-  // DatabaseReference ref = FirebaseDatabase.instance.ref();
-
   @override
   void onInit() {
-    // Firebase.initializeApp();
     super.onInit();
   }
 
   @override
-  void onReady() {
-    // TODO:
+  void onReady() async {
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
     super.onReady();
   }
 
   @override
-  void onClose() {
-    // TODO:
+  void onClose() async {
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     super.onClose();
   }
 
   int currentIndex = 0;
-
-  // MCQ? mcqOptions = MCQ.notselected;
+  RxBool everResumed = false.obs;
   MCQ? selectedOption = MCQ.notselected;
 
   //
@@ -150,6 +145,7 @@ class TestController extends GetxController {
   ];
 
   void next() {
+    log(everResumed.toString());
     print("$currentIndex ${testMetaData.length}");
     if ((currentIndex + 1) < testMetaData.length) {
       currentIndex++;
@@ -168,6 +164,12 @@ class TestController extends GetxController {
     next();
     update();
   }
+
+  void instantSubmit() {
+    for (var i = currentIndex; i < testMetaData.length; i++) {
+      next();
+    }
+  } //
 
   // void readData() {
   //   DatabaseReference starCountRef = FirebaseDatabase.instance.ref('posts/123/starCount');
@@ -195,7 +197,7 @@ class TestController extends GetxController {
   //   print('No data available.');
   // }
 
-  updateMCQSelection(MCQ value) {
+  void updateMCQSelection(MCQ value) {
     selectedOption = value;
     log(value.toString());
     log(value.runtimeType.toString());
