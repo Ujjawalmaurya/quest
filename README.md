@@ -46,6 +46,10 @@ This project is licensed under the MIT License.
 
 ### Connect with Us
 
+- [Github](https://github.com/Ujjawalmaurya)
+- [Twitter](https://twitter.com/monsterthatlies)
+- [Linkedin](https://in.linkedin.com/in/ujjawalmauryaum)
+
 Stay updated on our progress and join the conversation:
 
 Let's create an inclusive and innovative learning environment together! 🌐📚🚀
