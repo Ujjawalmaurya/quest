@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../resultController.dart';
-import 'data.dart';
 
 class PieChartWidget extends StatelessWidget {
   // final List sectors;
@@ -13,7 +12,7 @@ class PieChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1,
+      aspectRatio: 1.4, // fits perfectly in emulator Pxl-4
       child: PieChart(
         PieChartData(
           // pieTouchData: PieTouchData(

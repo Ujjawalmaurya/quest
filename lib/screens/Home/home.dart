@@ -10,9 +10,7 @@ class HomePage extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Ongoing Quizes"),
-        ),
+        appBar: AppBar(title: const Text("Ongoing Quizes")),
         body: Obx(
           () => controller.isLoading.value
               ? Center(

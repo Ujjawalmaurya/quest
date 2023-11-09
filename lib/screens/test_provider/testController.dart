@@ -5,10 +5,12 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
 import 'package:quest/customWidgets/colorMEans.dart';
 import 'package:quest/screens/test_provider/testScreen.dart';
+import 'package:quest/src/constants/colors.dart';
 
 class TestController extends GetxController {
   @override
   void onInit() {
+    WidgetsBinding.instance.addObserver(TestScreen() as WidgetsBindingObserver);
     super.onInit();
   }
 
@@ -20,6 +22,7 @@ class TestController extends GetxController {
 
   @override
   void onClose() async {
+    WidgetsBinding.instance.removeObserver(TestScreen() as WidgetsBindingObserver);
     await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     super.onClose();
   }
@@ -248,24 +251,24 @@ class TestController extends GetxController {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 25),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   child: GridView.builder(
                     shrinkWrap: true,
                     itemCount: testMetaData.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
                     itemBuilder: (BuildContext context, int i) {
                       return Padding(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                         child: GetBuilder<TestController>(
                           init: TestController(),
                           initState: (_) {},
                           builder: (_) {
                             return CircleAvatar(
-                              radius: 3,
+                              radius: 3.5,
                               backgroundColor: _.testMetaData[i]["isMarked"]
                                   ? Colors.redAccent
                                   : _.testMetaData[i]["submittedAns"] != ''
-                                      ? Colors.green
+                                      ? QuizColors.green
                                       : Colors.grey,
                               child: Text(
                                 "${i + 1}",
@@ -280,7 +283,34 @@ class TestController extends GetxController {
                 ),
               ],
             ),
-            const ColorMeanings(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  Row(children: [
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: CircleAvatar(radius: 12, backgroundColor: QuizColors.grey),
+                    ),
+                    Text("NOT Attemped")
+                  ]),
+                  Row(children: [
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: CircleAvatar(radius: 12, backgroundColor: QuizColors.green),
+                    ),
+                    Text("Attempted")
+                  ]),
+                  Row(children: [
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: CircleAvatar(radius: 12, backgroundColor: QuizColors.red),
+                    ),
+                    Text("Marked for review")
+                  ]),
+                ],
+              ),
+            ),
           ],
         ),
       ),

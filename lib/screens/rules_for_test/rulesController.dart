@@ -32,7 +32,7 @@ class RulesController extends GetxController {
   }
 
   late Timer? _timer;
-  RxInt duration = 5.obs;
+  RxInt duration = 2.obs;
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);

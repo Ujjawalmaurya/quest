@@ -15,28 +15,28 @@ class ColorMeanings extends StatelessWidget {
           Row(children: [
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.markedColor),
+              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.grey),
             ),
             Text("Marked for review or NOT Attemped")
           ]),
           Row(children: [
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.correctColor),
+              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.green),
             ),
             Text("Correct")
           ]),
           Row(children: [
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.incorrectColor),
+              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.red),
             ),
             Text("Incorrect")
           ]),
           Row(children: [
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.attemptColor),
+              child: CircleAvatar(radius: 12, backgroundColor: QuizColors.blue),
             ),
             Text("Attempted")
           ]),

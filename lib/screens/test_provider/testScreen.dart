@@ -4,20 +4,47 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quest/screens/test_provider/testController.dart';
 import 'package:quest/customWidgets/choicesTile.dart';
+import 'package:quest/src/constants/colors.dart';
 
 enum MCQ { a, b, c, d, notselected }
 // enum SingingCharacter { lafayette, jefferson }
 
-class TestScreen extends GetWidget<TestController> {
+class TestScreen extends GetWidget<TestController> with WidgetsBindingObserver {
   TestScreen({super.key});
 
   // TestController testCtr = Get.find<TestController>();
 
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   controller.instantSubmit();
+  //   controller.everResumed.value = true;
+  //   print('state = $state');
+  // }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    controller.instantSubmit();
-    controller.everResumed.value = true;
-    print('state = $state');
+    super.didChangeAppLifecycleState(state);
+
+    // These are the callbacks
+    switch (state) {
+      case AppLifecycleState.resumed:
+        log("resumed");
+        // controller.instantSubmit();
+        // controller.everResumed.value = true;
+        break;
+      case AppLifecycleState.inactive:
+        // widget is inactive
+        log("inactive");
+        break;
+      case AppLifecycleState.paused:
+        // widget is paused
+        log("paused");
+        break;
+      case AppLifecycleState.detached:
+        // widget is detached
+        log("detached");
+        break;
+    }
   }
 
   @override
@@ -71,7 +98,7 @@ class TestScreen extends GetWidget<TestController> {
                         child: Column(
                           children: [
                             Text(
-                              "Question ${_.testMetaData[_.currentIndex]["questNo"]}:",
+                              "Question Number ${_.testMetaData[_.currentIndex]["questNo"]}:",
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                             Text(
@@ -156,7 +183,7 @@ class TestScreen extends GetWidget<TestController> {
                   ),
                   ElevatedButton(
                     style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.greenAccent),
+                      backgroundColor: MaterialStatePropertyAll(QuizColors.green),
                     ),
                     onPressed: () => _.next(),
                     child: const Text(

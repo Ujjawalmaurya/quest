@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:quest/customWidgets/colorMEans.dart';
 import 'package:quest/screens/resultScreen/pieChart/pieChart.dart';
 import 'package:quest/screens/resultScreen/resultController.dart';
-import 'package:quest/src/constants/colors.dart';
 import 'package:quest/screens/test_provider/testController.dart';
 
 class ShowResult extends GetWidget<ResultController> {
@@ -30,7 +29,7 @@ class ShowResult extends GetWidget<ResultController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                       child: SizedBox(
                         child: GetBuilder<ResultController>(
                           init: ResultController(),
@@ -69,7 +68,7 @@ class ShowResult extends GetWidget<ResultController> {
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
                             itemBuilder: (BuildContext context, int i) {
                               return Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.symmetric(vertical: 3),
                                 child: Column(
                                   children: [
                                     CircleAvatar(
@@ -79,7 +78,7 @@ class ShowResult extends GetWidget<ResultController> {
                                               : _.testMetaData[i]["submittedAns"] != ''
                                                   ? Colors.redAccent
                                                   : Colors.grey,
-                                      radius: 20,
+                                      radius: 23,
                                       child: Text(
                                         _.testMetaData[i]["submittedAns"] == _.testMetaData[i]["correctAns"]
                                             ? "+1"
@@ -94,7 +93,7 @@ class ShowResult extends GetWidget<ResultController> {
                                       "Question\nno: ${i + 1}",
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        fontSize: 11.5,
+                                        fontSize: 10,
                                         // fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -108,7 +107,8 @@ class ShowResult extends GetWidget<ResultController> {
                     ),
                     PieChartWidget(),
                     const Text("PieChart representation of the result"),
-                    const ColorMeanings()
+                    const ColorMeanings(),
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),

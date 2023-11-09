@@ -14,7 +14,7 @@ class GetPages {
     GetPage(
       // transition: primaryTransition,
       name: '/login',
-      page: () => const LoginPage(),
+      page: () => LoginPage(),
       binding: LoginBinding(),
     ),
     GetPage(

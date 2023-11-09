@@ -20,7 +20,7 @@ class QuestAppTheme {
     brightness: _brightness,
     primaryColor: _primaryColor,
     primarySwatch: _primarySwatch,
-    useMaterial3: true,
+    // useMaterial3: true,
     // cardTheme: CardTheme(
     //   elevation: 5,
     //   shape: RoundedRectangleBorder(
