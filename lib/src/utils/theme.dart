@@ -20,7 +20,7 @@ class QuestAppTheme {
     brightness: _brightness,
     primaryColor: _primaryColor,
     primarySwatch: _primarySwatch,
-    // useMaterial3: true,
+    useMaterial3: false,
     // cardTheme: CardTheme(
     //   elevation: 5,
     //   shape: RoundedRectangleBorder(
@@ -57,9 +57,27 @@ class QuestAppTheme {
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
+      // labelStyle: const TextStyle(
+      //   fontWeight: FontWeight.bold,
+      //   color: Colors.grey,
+      // ),
+      labelStyle: TextStyle(
+        color: _primarySwatch,
+      ),
       fillColor: Colors.grey.withOpacity(0.1),
       filled: true,
-      border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+      // border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+      border: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          width: 2,
+        ),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderSide: BorderSide(
+          width: 2,
+        ),
+      ),
       contentPadding: const EdgeInsets.symmetric(
         vertical: 22,
         horizontal: 26,
@@ -68,9 +86,6 @@ class QuestAppTheme {
       //   fontSize: 45,
       //   decorationColor: Colors.red,
       // ),
-      labelStyle: TextStyle(
-        color: _primarySwatch,
-      ),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       circularTrackColor: Colors.amber,

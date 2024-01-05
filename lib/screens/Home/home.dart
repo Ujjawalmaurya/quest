@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:quest/screens/Home/homeController.dart';
+import 'package:quest/screens/bg.dart';
 // import 'package:quest/Test/test.dart';
 
 class HomePage extends GetWidget<HomeController> {
@@ -11,39 +12,44 @@ class HomePage extends GetWidget<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Ongoing Quizes")),
-        body: Obx(
-          () => controller.isLoading.value
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Getting Quiz info...",
-                        style: Theme.of(context).textTheme.headlineMedium,
+        body: Stack(
+          children: [
+            AnimatingBg(),
+            Obx(
+              () => controller.isLoading.value
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Getting Quiz info...",
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(strokeWidth: 3),
+                          ),
+                        ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(strokeWidth: 3),
-                      ),
-                    ],
-                  ),
-                )
-              :
-              // : Column(
-              //     mainAxisSize: MainAxisSize.max,
-              //     children: [
-              // Padding(
-              //   padding: const EdgeInsets.all(4.0),
-              //   child: Text(
-              //     "Ongoing Quizes",
-              //     style: Theme.of(context).textTheme.headlineSmall,
-              //   ),
+                    )
+                  :
+                  // : Column(
+                  //     mainAxisSize: MainAxisSize.max,
+                  //     children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.all(4.0),
+                  //   child: Text(
+                  //     "Ongoing Quizes",
+                  //     style: Theme.of(context).textTheme.headlineSmall,
+                  //   ),
+                  // ),
+                  const Listview(),
+              //   ],
               // ),
-              const Listview(),
-          //   ],
-          // ),
+            ),
+          ],
         )
         // ListView.builder(
         //   itemCount: 10,

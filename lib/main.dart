@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:get_storage/get_storage.dart';
-import 'package:quest/screens/Login/login.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:quest/binding/getPages.dart';
 import 'package:quest/src/utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await GetStorage.init();
+  await GetStorage.init();
   // Firebase.initializeApp();
   runApp(const MyApp());
 }

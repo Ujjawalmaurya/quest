@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:quest/src/utils/getStorage.dart';
+import 'package:quest/src/utils/snackBar.dart';
 
 class HomeController extends GetxController {
   RxBool isLoading = true.obs;
@@ -6,7 +8,9 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    Future.delayed(const Duration(seconds: 1), () => isLoading.value = false);
+    Future.delayed(const Duration(seconds: 1), () => isLoading.value = false).then(
+      (value) => ShowSnackbar.wecome(),
+    );
     super.onInit();
   }
 
