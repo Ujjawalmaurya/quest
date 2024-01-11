@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quest/binding/getPages.dart';
+import 'package:quest/screens/Home/home.dart';
+import 'package:quest/screens/Login/login.dart';
+import 'package:quest/src/utils/getStorage.dart';
 import 'package:quest/src/utils/theme.dart';
 
 void main() async {
@@ -19,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       getPages: GetPages.pages,
-      initialRoute: '/login',
+      initialRoute: Storage.read(StorageKeys.username) == null ? LoginPage.path : HomePage.path,
       title: 'QUESTion',
       themeMode: ThemeMode.light,
       theme: QuestAppTheme.lightTheme,

@@ -8,6 +8,7 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
+    //Fake DB
     Future.delayed(const Duration(seconds: 1), () => isLoading.value = false).then(
       (value) => ShowSnackbar.wecome(),
     );

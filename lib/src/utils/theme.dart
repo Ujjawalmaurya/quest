@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Color _primaryColor = Colors.blue;
-MaterialColor _primarySwatch = Colors.lightBlue;
-Brightness _brightness = Brightness.light;
+Color _primaryColor = Colors.deepPurple;
+MaterialColor _primarySwatch = Colors.deepPurple;
+// Brightness _brightness = Brightness.light;
 // Color _accentColor = Colors.yellow;
 
 class QuestAppTheme {
@@ -17,7 +17,7 @@ class QuestAppTheme {
     //   seedColor: Colors.deepPurpleAccent,
     //   brightness: Brightness.light,
     // ),
-    brightness: _brightness,
+    // brightness: _brightness,
     primaryColor: _primaryColor,
     primarySwatch: _primarySwatch,
     useMaterial3: false,

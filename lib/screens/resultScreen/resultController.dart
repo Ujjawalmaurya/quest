@@ -26,6 +26,7 @@ class ResultController extends GetxController {
 
   @override
   void onReady() {
+    // fake http request
     Future.delayed(const Duration(seconds: 1), () {
       isLoading.value = false;
     });

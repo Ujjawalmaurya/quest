@@ -5,7 +5,7 @@ class ShowSnackbar {
   static wecome() {
     Get.snackbar(
       "Welcome!!",
-      '${readData(StorageKeys.username)}',
+      '${Storage.read(StorageKeys.username)}',
       overlayBlur: 1,
     );
   }

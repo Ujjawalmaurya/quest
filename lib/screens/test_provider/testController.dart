@@ -3,14 +3,63 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
+import 'package:quest/screens/resultScreen/resultScreen.dart';
 import 'package:quest/screens/test_provider/testScreen.dart';
 import 'package:quest/src/constants/colors.dart';
 
-class TestController extends GetxController {
+class TestController extends FullLifeCycleController with FullLifeCycleMixin {
   @override
   void onInit() {
-    WidgetsBinding.instance.addObserver(TestScreen() as WidgetsBindingObserver);
+    // WidgetsBinding.instance.addObserver(TestScreen());
     super.onInit();
+  }
+
+  // Mandatory
+  @override
+  void onDetached() {
+    print('HomeController - onDetached called');
+  }
+
+  // Mandatory
+  @override
+  void onInactive() {
+    print('HomeController - onInative called');
+  }
+
+  // Mandatory
+  @override
+  void onPaused() {
+    print('HomeController - onPaused called');
+  }
+
+  // Mandatory
+  @override
+  void onResumed() {
+    print('HomeController - onResumed called');
+  }
+
+  @override
+  didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        log("App Resumed");
+        instantSubmit();
+        break;
+      case AppLifecycleState.inactive:
+        log("App InActive");
+        break;
+      case AppLifecycleState.paused:
+        log("App Paused");
+        break;
+      case AppLifecycleState.detached:
+        log("App Detached");
+        break;
+      case AppLifecycleState.hidden:
+        // TODO: Handle this case.
+        log("Lifecycle Hidden");
+        break;
+    }
   }
 
   @override
@@ -21,7 +70,7 @@ class TestController extends GetxController {
 
   @override
   void onClose() async {
-    WidgetsBinding.instance.removeObserver(TestScreen() as WidgetsBindingObserver);
+    // WidgetsBinding.instance.removeObserver(TestScreen());
     await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     super.onClose();
   }
@@ -156,7 +205,7 @@ class TestController extends GetxController {
       // TODO: Last question
       // alertSnackBar("Limit reached", "Reached to last question");
       // Get.off(() => const ShowResult());
-      Get.toNamed("/showResult");
+      Get.toNamed(ShowResult.path);
     }
     update();
   }

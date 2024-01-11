@@ -10,47 +10,9 @@ import 'package:quest/src/constants/colors.dart';
 enum MCQ { a, b, c, d, notselected }
 // enum SingingCharacter { lafayette, jefferson }
 
-class TestScreen extends GetWidget<TestController> with WidgetsBindingObserver {
+class TestScreen extends GetWidget<TestController> {
+  static const path = '/testScreen';
   TestScreen({super.key});
-
-  // TestController testCtr = Get.find<TestController>();
-
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   controller.instantSubmit();
-  //   controller.everResumed.value = true;
-  //   print('state = $state');
-  // }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    // These are the callbacks
-    switch (state) {
-      case AppLifecycleState.resumed:
-        log("resumed");
-        controller.instantSubmit();
-        // controller.everResumed.value = true;
-        break;
-      case AppLifecycleState.inactive:
-        // widget is inactive
-        log("inactive");
-        break;
-      case AppLifecycleState.paused:
-        // widget is paused
-        log("paused");
-        break;
-      case AppLifecycleState.detached:
-        // widget is detached
-        log("detached");
-        break;
-      case AppLifecycleState.hidden:
-        // TODO: Handle this case.
-        log("Hidden");
-        break;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +63,11 @@ class TestScreen extends GetWidget<TestController> with WidgetsBindingObserver {
                     shadowColor: Colors.amber.withOpacity(0.3),
                     margin: const EdgeInsets.all(6),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
                           child: Column(
                             children: [
                               Padding(
@@ -118,7 +80,7 @@ class TestScreen extends GetWidget<TestController> with WidgetsBindingObserver {
                               Text(
                                 "${_.testMetaData[_.currentIndex]["question"]}",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.headlineSmall,
                                 // TextStyle(
                                 //   fontSize: 16,
                                 //   fontWeight: FontWeight.w500,
@@ -129,41 +91,13 @@ class TestScreen extends GetWidget<TestController> with WidgetsBindingObserver {
                             ],
                           ),
                         ),
-                        // GetBuilder<TestController>(
-                        //   init: TestController(),
-                        //   initState: (_) {},
-                        //   builder: (_) {
-                        //     return Column(
-                        //       mainAxisSize: MainAxisSize.min,
-                        //       children: [
-                        //         ChoiceTile(
-                        //           value: MCQ.a,
-                        //           groupValue: _.selectedOption,
-                        //           onChanged: (_val) => _.updateMCQSelection(_val),
-                        //           choice: "(A) ${_.testMetaData[_.currentIndex]['option_A']}",
-                        //         ),
-                        //         ChoiceTile(
-                        //           value: MCQ.b,
-                        //           groupValue: _.selectedOption,
-                        //           onChanged: (_val) => _.updateMCQSelection(_val),
-                        //           choice: "(B) ${_.testMetaData[_.currentIndex]['option_B']}",
-                        //         ),
-                        //         ChoiceTile(
-                        //           value: MCQ.c,
-                        //           groupValue: _.selectedOption,
-                        //           onChanged: (_val) => _.updateMCQSelection(_val),
-                        //           choice: "(C) ${_.testMetaData[_.currentIndex]['option_C']}",
-                        //         ),
-                        //         ChoiceTile(
-                        //           value: MCQ.d,
-                        //           groupValue: _.selectedOption,
-                        //           onChanged: (_val) => _.updateMCQSelection(_val),
-                        //           choice: "(D) ${_.testMetaData[_.currentIndex]['option_D']}",
-                        //         ),
-                        //       ],
-                        //     );
-                        //   },
-                        // )
+                        // const SizedBox.shrink(),
+                        const Divider(),
+                        // const SizedBox.shrink(),
+                        Text(
+                          "Choices",
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
                         ChoiceTile(
                           value: MCQ.a,
                           groupValue: _.selectedOption,
@@ -188,6 +122,7 @@ class TestScreen extends GetWidget<TestController> with WidgetsBindingObserver {
                           onChanged: (_val) => _.updateMCQSelection(_val),
                           choice: "(D) ${_.testMetaData[_.currentIndex]['option_D']}",
                         ),
+                        const SizedBox.shrink(),
                       ],
                     ),
                   );

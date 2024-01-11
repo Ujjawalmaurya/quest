@@ -6,6 +6,7 @@ import 'package:quest/screens/Login/loginController.dart';
 // import 'package:quest/Login/loginController.dart';
 
 class LoginPage extends GetWidget<LoginController> {
+  static const String path = '/login';
   LoginPage({super.key});
 
   // LoginController controller = Get.find<LoginController>();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:quest/screens/Home/home.dart';
 import 'package:quest/src/utils/getStorage.dart';
 
 class LoginController extends GetxController {
@@ -18,8 +19,8 @@ class LoginController extends GetxController {
 
   void initiateLogin() {
     if (usernameCtr.text == correctUsername && passCtr.text == correctPass) {
-      writeData(StorageKeys.username, usernameCtr.text);
-      Get.offAllNamed('/home');
+      Storage.write(StorageKeys.username, usernameCtr.text);
+      Get.offAllNamed(HomePage.path);
     } else {
       Get.snackbar(
         'Wrong Credentials',

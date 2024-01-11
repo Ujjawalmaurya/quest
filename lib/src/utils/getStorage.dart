@@ -4,16 +4,25 @@ import 'package:get_storage/get_storage.dart';
 
 final GetStorage box = GetStorage();
 
-void writeData(String key, dynamic value) {
-  box.write(key, value).onError(
+class Storage {
+  static clear() => box.erase().onError(
         (error, stackTrace) => log(
-          "$error while writing$key, $stackTrace",
-          name: "getStorage.dart writing error log",
+          "$error while clearing storage, $stackTrace",
+          name: "getStorage.dart clearing error log",
         ),
       );
-}
 
-readData(String key) => box.read(key);
+  static write(String key, dynamic value) {
+    box.write(key, value).onError(
+          (error, stackTrace) => log(
+            "$error while writing$key, $stackTrace",
+            name: "getStorage.dart writing error log",
+          ),
+        );
+  }
+
+  static read(String key) => box.read(key);
+}
 
 class StorageKeys {
   static const String username = 'user';

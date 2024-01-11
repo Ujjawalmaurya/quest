@@ -6,6 +6,7 @@ import 'package:quest/screens/resultScreen/resultController.dart';
 import 'package:quest/screens/test_provider/testController.dart';
 
 class ShowResult extends GetWidget<ResultController> {
+  static const String path = '/showResult';
   const ShowResult({super.key});
   @override
   Widget build(BuildContext context) {

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quest/customWidgets/ruleList.dart';
 import 'package:quest/screens/rules_for_test/rulesController.dart';
 
 class Rules extends GetWidget<RulesController> {
+  static const String path = '/rules';
   const Rules({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final headerTxtStyle = Theme.of(context).textTheme.displayLarge;
-    final bodyTxtStyle = Theme.of(context).textTheme.headlineSmall;
+    // final headerTxtStyle = Theme.of(context).textTheme.displayMedium;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SizedBox(
         width: Get.width,
         child: SafeArea(
@@ -18,43 +20,27 @@ class Rules extends GetWidget<RulesController> {
             padding: const EdgeInsets.all(18.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Center(
-                  child: Text(
-                    'Rules',
-                    style: headerTxtStyle,
-                  ),
+                Image.asset(
+                  'assets/rules.jpg',
+                  // height: 320,
+                  // width: 320,
                 ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                        '1 - Screenshots and Recording is NOT allowed.',
-                        style: bodyTxtStyle,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                        '2 - Switching and closing app will SUBMIT Quiz with existing answers',
-                        style: bodyTxtStyle,
-                      ),
-                    ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(5.0),
-                    //   child: Text('3 - Keep an eye on Remaining TIME if it have', style: bodyTxtStyle),
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                        '3 - Answers CAN be changed before submission only.',
-                        style: bodyTxtStyle,
-                      ),
-                    ),
-                  ],
-                ),
+                const Divider(),
+                // Center(
+                //   child: Text(
+                //     'Rules',
+                //     style: headerTxtStyle,
+                //   ),
+                // ),
+                // Column(
+                //   children: [
+
+                const RuleList(),
+                // ],
+                // ),
+                Divider(),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Center(
@@ -65,12 +51,29 @@ class Rules extends GetWidget<RulesController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Text("Test will start automatically after"),
+                            const Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(text: 'Quiz will'),
+                                  TextSpan(
+                                    text: ' Automatically start ',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(text: 'after'),
+                                ],
+                              ),
+                              // style: Get.theme.textTheme.titleSmall,
+                            ),
+                            // const Text("Test will start automatically after"),
                             Text(
                               "${controller.duration.value}",
                               style: Theme.of(context).textTheme.displayMedium,
                             ),
                             const Text("Seconds"),
+                            Text(
+                              "Please Wait!!",
+                              style: Get.theme.textTheme.titleMedium,
+                            )
                           ],
                         ),
                       ),
