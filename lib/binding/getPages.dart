@@ -4,6 +4,7 @@ import 'package:quest/screens/Login/login.dart';
 import 'package:quest/screens/resultScreen/resultScreen.dart';
 import 'package:quest/screens/rules_for_test/rules.dart';
 import 'package:quest/screens/test_provider/testScreen.dart';
+import 'package:quest/screens/settings/settings.dart';
 import 'package:quest/binding/bindings.dart';
 
 Transition primaryTransition = Transition.cupertino;
@@ -41,6 +42,11 @@ class GetPages {
       name: Rules.path,
       page: () => const Rules(),
       binding: RuleBinding(),
+    ),
+    GetPage(
+      name: SettingsScreen.path,
+      page: () => const SettingsScreen(),
+      binding: SettingsBinding(),
     ),
 
     // GetPage(

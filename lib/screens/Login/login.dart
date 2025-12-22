@@ -98,11 +98,7 @@ class LoginPage extends GetWidget<LoginController> {
                       width: 600,
                       height: 45.0,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (controller.loginFormKey.currentState!.validate()) {
-                            controller.initiateLogin();
-                          }
-                        },
+                        onPressed: () => controller.validateAndLogin(),
                         child: const Text("Login"),
                       ),
                     ),

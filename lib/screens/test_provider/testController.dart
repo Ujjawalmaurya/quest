@@ -1,17 +1,37 @@
+import 'package:flutter/services.dart';
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:flutter_windowmanager_plus/flutter_windowmanager_plus.dart';
 import 'package:get/get.dart';
 import 'package:quest/screens/resultScreen/resultScreen.dart';
 import 'package:quest/screens/test_provider/testScreen.dart';
+import 'package:quest/screens/settings/settingsController.dart';
 import 'package:quest/src/constants/colors.dart';
 
 class TestController extends FullLifeCycleController with FullLifeCycleMixin {
+  late Timer _timer;
+  RxInt remainingTime = 600.obs; // 10 minutes in seconds
+
+  DateTime? _questionStartTime;
+
   @override
   void onInit() {
-    // WidgetsBinding.instance.addObserver(TestScreen());
+    startTimer();
+    _questionStartTime = DateTime.now();
     super.onInit();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (remainingTime.value > 0) {
+        remainingTime.value--;
+      } else {
+        _timer.cancel();
+        instantSubmit();
+      }
+    });
   }
 
   // Mandatory
@@ -50,7 +70,7 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     switch (state) {
       case AppLifecycleState.resumed:
         log("App Resumed");
-        instantSubmit();
+        // instantSubmit(); // Disabled auto-submit on resume for better UX and stability
         break;
       case AppLifecycleState.inactive:
         log("App InActive");
@@ -70,14 +90,15 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
 
   @override
   void onReady() async {
-    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+    await FlutterWindowManagerPlus.addFlags(FlutterWindowManagerPlus.FLAG_SECURE);
     super.onReady();
   }
 
   @override
   void onClose() async {
+    _timer.cancel();
     // WidgetsBinding.instance.removeObserver(TestScreen());
-    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+    await FlutterWindowManagerPlus.clearFlags(FlutterWindowManagerPlus.FLAG_SECURE);
     super.onClose();
   }
 
@@ -202,18 +223,25 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
   ];
 
   void next() {
+    _recordTime();
+    _triggerHaptic();
     log(everResumed.toString());
     print("$currentIndex ${testMetaData.length}");
     if ((currentIndex + 1) < testMetaData.length) {
       currentIndex++;
-      updateMCQSelection(MCQ.notselected);
+      selectedOption = MCQ.notselected; // Reset selection locally
+      _questionStartTime = DateTime.now();
     } else {
-      // TODO: Last question
-      // alertSnackBar("Limit reached", "Reached to last question");
-      // Get.off(() => const ShowResult());
       Get.toNamed(ShowResult.path);
     }
     update();
+  }
+
+  void _recordTime() {
+    if (_questionStartTime != null) {
+      final duration = DateTime.now().difference(_questionStartTime!).inSeconds;
+      testMetaData[currentIndex]['timeTaken'] = (testMetaData[currentIndex]['timeTaken'] ?? 0) + duration;
+    }
   }
 
   void mark() {
@@ -275,6 +303,36 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
         testMetaData[currentIndex]["submittedAns"] = '';
     }
     update();
+  }
+
+  void _triggerHaptic() {
+    if (Get.find<SettingsController>().hapticFeedback.value) {
+      HapticFeedback.lightImpact();
+    }
+  }
+
+  Map<String, dynamic> generatePerformanceReport() {
+    int totalTime = 0;
+    List<Map<String, dynamic>> details = [];
+
+    for (var i = 0; i < testMetaData.length; i++) {
+      var data = testMetaData[i];
+      totalTime += (data['timeTaken'] as int?) ?? 0;
+      details.add({
+        "question": i + 1,
+        "time": (data['timeTaken'] as int?) ?? 0,
+        "status": data['submittedAns'] == data['correctAns']
+            ? "Correct"
+            : data['submittedAns'] == ''
+                ? "Unanswered"
+                : "Incorrect",
+      });
+    }
+
+    return {
+      "total_time": totalTime,
+      "details": details,
+    };
   }
 
   summarySheet() {

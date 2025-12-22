@@ -26,7 +26,7 @@ class LoginController extends GetxController {
         'Wrong Credentials',
         'Username and Password are incorrect',
         barBlur: 5,
-        overlayBlur: 10,
+        // overlayBlur: 10,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.pinkAccent,
         borderRadius: 8,
@@ -34,6 +34,12 @@ class LoginController extends GetxController {
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
       );
+    }
+  }
+
+  void validateAndLogin() {
+    if (loginFormKey.currentState!.validate()) {
+      initiateLogin();
     }
   }
 

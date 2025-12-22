@@ -12,8 +12,8 @@ class ResultController extends GetxController {
   int attempt = 0;
   int notAnswered = 0;
   RxBool isLoading = true.obs;
-  //
-  // int touchedIndex = -1;
+  Map<String, dynamic> performanceReport = {};
+  int touchedIndex = -1;
 
   TestController testController = Get.find<TestController>();
   //
@@ -50,16 +50,19 @@ class ResultController extends GetxController {
     testController.testMetaData.forEach((var i) {
       if (i["submittedAns"] != '') {
         attempt++;
+        if (i["submittedAns"] == i["correctAns"]) {
+          correct++;
+        } else {
+          incorrect++;
+        }
       } else {
         notAnswered++;
       }
-
-      if (i["submittedAns"] == i["correctAns"]) {
-        correct++;
-      } else {
-        incorrect++;
-      }
     });
+
+    // Generate performance report
+    performanceReport = testController.generatePerformanceReport();
+    print("Performance Report: $performanceReport");
   }
 
   // handleTouch(FlTouchEvent event, pieTouchResponse) {
