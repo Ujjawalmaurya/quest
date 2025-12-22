@@ -38,6 +38,12 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     print('HomeController - onResumed called');
   }
 
+  // Mandatory
+  @override
+  void onHidden() {
+    print('HomeController - onHidden called');
+  }
+
   @override
   didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
