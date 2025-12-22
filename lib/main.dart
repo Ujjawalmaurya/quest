@@ -20,13 +20,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Storage.read(StorageKeys.isDarkMode) ?? false;
+    final int? colorValue = Storage.read(StorageKeys.accentColor);
+    final Color accentColor = colorValue != null ? Color(colorValue) : Colors.deepPurple;
+
     return GetMaterialApp(
       getPages: GetPages.pages,
       initialRoute: Storage.read(StorageKeys.username) == null ? LoginPage.path : HomePage.path,
       title: 'QUESTion',
-      themeMode: ThemeMode.light,
-      theme: QuestAppTheme.lightTheme,
-      darkTheme: QuestAppTheme.darkTheme,
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+      theme: QuestAppTheme.getTheme(accentColor, false),
+      darkTheme: QuestAppTheme.getTheme(accentColor, true),
     );
   }
 }

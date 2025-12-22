@@ -26,8 +26,11 @@ class Storage {
 
 class StorageKeys {
   static const String username = 'user';
-  // static const String  = '';
-}//
+  static const String isDarkMode = 'isDarkMode';
+  static const String accentColor = 'accentColor';
+  static const String hapticFeedback = 'hapticFeedback';
+  static const String showTimer = 'showTimer';
+} //
 
 // FOR FUTURE USE ONLY
 // class StorageKeys {

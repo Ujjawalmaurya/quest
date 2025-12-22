@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   flutter_staggered_animations: ^1.1.1
   flutter_svg: ^2.0.9
-  flutter_windowmanager: ^0.2.0
+  flutter_windowmanager_plus: ^1.0.1
   get: ^4.6.6
   get_storage: ^2.1.1
   win32: ^5.15.0

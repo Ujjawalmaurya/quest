@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quest/screens/bg.dart';
 import 'package:quest/screens/test_provider/testController.dart';
+import 'package:quest/screens/settings/settingsController.dart';
 import 'package:quest/customWidgets/choicesTile.dart';
-import 'package:quest/src/constants/colors.dart';
 
 enum MCQ { a, b, c, d, notselected }
 // enum SingingCharacter { lafayette, jefferson }
@@ -20,14 +18,21 @@ class TestScreen extends GetWidget<TestController> {
       appBar: AppBar(
         centerTitle: true,
         actions: [
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: const Icon(Icons.textsms_sharp),
-          // ),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: const Icon(Icons.dangerous),
-          // ),
+          GetX<SettingsController>(
+            builder: (settings) {
+              return settings.showTimer.value
+                  ? Center(
+                      child: Obx(() => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              _formatTime(Get.find<TestController>().remainingTime.value),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          )),
+                    )
+                  : const SizedBox.shrink();
+            },
+          ),
           IconButton(
             onPressed: () => Get.find<TestController>().summarySheet(),
             icon: const Icon(Icons.pie_chart_outline_sharp),
@@ -49,113 +54,106 @@ class TestScreen extends GetWidget<TestController> {
         children: [
           AnimatingBg(),
           Column(
-            mainAxisSize: MainAxisSize.max,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                  child: GetBuilder<TestController>(
-                init: TestController(),
-                initState: (_) {},
-                builder: (_) {
-                  return Card(
-                    color: Colors.white.withOpacity(0.8),
-                    elevation: 10,
-                    shadowColor: Colors.amber.withOpacity(0.3),
-                    margin: const EdgeInsets.all(6),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
+                child: GetBuilder<TestController>(
+                  builder: (_) {
+                    return ListView(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                child: Text(
-                                  "Question ${_.testMetaData[_.currentIndex]["questNo"]}:",
-                                  style: Theme.of(context).textTheme.headlineMedium,
+                        Card(
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Question ${_.testMetaData[_.currentIndex]["questNo"]}",
+                                  style: context.textTheme.titleMedium?.copyWith(
+                                    color: context.theme.colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "${_.testMetaData[_.currentIndex]["question"]}",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.headlineSmall,
-                                // TextStyle(
-                                //   fontSize: 16,
-                                //   fontWeight: FontWeight.w500,
-                                //   color: Colors.black87,
-                                //   // letterSpacing: 0.5,
-                                // ),
-                              ),
-                            ],
+                                const SizedBox(height: 16),
+                                Text(
+                                  "${_.testMetaData[_.currentIndex]["question"]}",
+                                  textAlign: TextAlign.center,
+                                  style: context.textTheme.headlineSmall?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        // const SizedBox.shrink(),
-                        const Divider(),
-                        // const SizedBox.shrink(),
-                        Text(
-                          "Choices",
-                          style: Theme.of(context).textTheme.headlineMedium,
+                        const SizedBox(height: 24),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            "Select Answer",
+                            style: context.textTheme.titleSmall?.copyWith(
+                              color: context.theme.colorScheme.onBackground.withOpacity(0.6),
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
                         ),
+                        const SizedBox(height: 12),
                         ChoiceTile(
                           value: MCQ.a,
                           groupValue: _.selectedOption,
                           onChanged: (_val) => _.updateMCQSelection(_val),
-                          choice: "(A) ${_.testMetaData[_.currentIndex]['option_A']}",
+                          choice: "${_.testMetaData[_.currentIndex]['option_A']}",
                         ),
                         ChoiceTile(
                           value: MCQ.b,
                           groupValue: _.selectedOption,
                           onChanged: (_val) => _.updateMCQSelection(_val),
-                          choice: "(B) ${_.testMetaData[_.currentIndex]['option_B']}",
+                          choice: "${_.testMetaData[_.currentIndex]['option_B']}",
                         ),
                         ChoiceTile(
                           value: MCQ.c,
                           groupValue: _.selectedOption,
                           onChanged: (_val) => _.updateMCQSelection(_val),
-                          choice: "(C) ${_.testMetaData[_.currentIndex]['option_C']}",
+                          choice: "${_.testMetaData[_.currentIndex]['option_C']}",
                         ),
                         ChoiceTile(
                           value: MCQ.d,
                           groupValue: _.selectedOption,
                           onChanged: (_val) => _.updateMCQSelection(_val),
-                          choice: "(D) ${_.testMetaData[_.currentIndex]['option_D']}",
+                          choice: "${_.testMetaData[_.currentIndex]['option_D']}",
                         ),
-                        const SizedBox.shrink(),
                       ],
-                    ),
-                  );
-                },
-              )),
+                    );
+                  },
+                ),
+              ),
               GetBuilder<TestController>(
-                init: TestController(),
-                initState: (_) {},
-                builder: (_) => Padding(
-                  padding: const EdgeInsets.all(28.0),
+                builder: (_) => Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: context.theme.colorScheme.surface,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, -5),
+                      ),
+                    ],
+                  ),
                   child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ElevatedButton(
-                        style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(Colors.red),
-                        ),
-                        onPressed: () => _.mark(),
-                        child: const Text(
-                          "Mark for review",
-                          style: TextStyle(fontSize: 20),
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => _.mark(),
+                          child: const Text("Mark Review"),
                         ),
                       ),
-                      ElevatedButton(
-                        style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(QuizColors.green),
-                        ),
-                        onPressed: () => _.next(),
-                        child: const Text(
-                          "Next",
-                          style: TextStyle(fontSize: 20),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => _.next(),
+                          child: const Text("Next Question"),
                         ),
                       ),
                     ],
@@ -167,5 +165,11 @@ class TestScreen extends GetWidget<TestController> {
         ],
       ),
     );
+  }
+
+  String _formatTime(int seconds) {
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+    return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 }

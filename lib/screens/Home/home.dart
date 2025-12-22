@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:quest/customWidgets/ruleList.dart';
 import 'package:quest/screens/Home/homeController.dart';
 import 'package:quest/screens/Login/login.dart';
+import 'package:quest/screens/settings/settings.dart';
 import 'package:quest/screens/rules_for_test/rules.dart';
 import 'package:quest/src/utils/getStorage.dart';
 // import 'package:quest/Test/test.dart';
@@ -17,9 +18,8 @@ class HomePage extends GetWidget<HomeController> {
     final txtTheme = Get.theme.textTheme.headlineSmall;
 
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
-          title: const Text("Ongoing Quizes"),
+          title: const Text("Ongoing Quizzes"),
         ),
         drawer: Drawer(
           child: ListView(
@@ -31,129 +31,71 @@ class HomePage extends GetWidget<HomeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      radius: 50,
+                      radius: 35,
+                      backgroundColor: Colors.white,
                       child: Text(
-                        "${Storage.read(StorageKeys.username)[0]}",
-                        style: Get.theme.textTheme.displayMedium!.copyWith(color: Colors.white),
+                        "${Storage.read(StorageKeys.username)[0]}".toUpperCase(),
+                        style: Get.theme.textTheme.headlineMedium!.copyWith(
+                          color: Get.theme.colorScheme.primary,
+                        ),
                       ),
-                      // Placeholder image or load the user's profile picture here
-                      // backgroundImage: ,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     Text(
                       '${Storage.read(StorageKeys.username)}',
                       style: const TextStyle(
                         fontSize: 20,
+                        fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                   ],
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-                onTap: () => Get.back(),
-              ),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text(
-                  'Settings',
-                ),
-                onTap: () {
-                  //
-                  // Navigate to the settings screen or perform other actions
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.rule),
-                title: const Text("Rules"),
-                onTap: () => Get.defaultDialog(
+              _buildDrawerItem(Icons.home, 'Home', () => Get.back()),
+              _buildDrawerItem(Icons.settings, 'Settings', () {
+                Get.back();
+                Get.toNamed(SettingsScreen.path);
+              }),
+              _buildDrawerItem(Icons.rule, 'Rules', () {
+                Get.defaultDialog(
                   title: "Rules",
                   content: const RuleList(),
-                  titlePadding: const EdgeInsets.all(10),
-                  contentPadding: const EdgeInsets.all(10),
-                ),
-              ),
-              const ListTile(
-                leading: Icon(Icons.verified_user_outlined),
-                title: Text("Terms of use"),
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
-                onTap: () => Get.defaultDialog(
+                  titlePadding: const EdgeInsets.all(16),
+                );
+              }),
+              _buildDrawerItem(Icons.logout, 'Logout', () {
+                Get.defaultDialog(
                   title: "Logout",
-                  titlePadding: EdgeInsets.only(top: 50, bottom: 5),
                   content: const Text("Are you sure you want to logout?"),
-                  contentPadding: EdgeInsets.only(top: 55, bottom: 30),
                   actions: [
-                    TextButton.icon(
-                      label: const Text("Cancel"),
-                      onPressed: () => Get.back(),
-                      icon: const Icon(Icons.cancel_outlined),
-                    ),
-                    OutlinedButton.icon(
+                    TextButton(onPressed: () => Get.back(), child: const Text("Cancel")),
+                    ElevatedButton(
                       onPressed: () {
                         Storage.clear();
                         Get.offAllNamed(LoginPage.path);
                       },
-                      icon: const Icon(Icons.logout),
-                      label: const Text("Logout"),
+                      child: const Text("Logout"),
                     ),
                   ],
-                ),
-              ),
-              // const EndDrawerButton(style: ButtonStyle()),
+                );
+              }),
             ],
           ),
         ),
         body: Obx(
           () => controller.isLoading.value
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Getting Quiz info...",
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(strokeWidth: 3),
-                      ),
-                    ],
-                  ),
-                )
-              :
-              // : Column(
-              //     mainAxisSize: MainAxisSize.max,
-              //     children: [
-              // Padding(
-              //   padding: const EdgeInsets.all(4.0),
-              //   child: Text(
+              ? const Center(child: CircularProgressIndicator())
+              : const Listview(),
+        ));
+  }
 
-              //     "Ongoing Quizes",
-              //     style: Theme.of(context).textTheme.headlineSmall,
-              //   ),
-              // ),
-              const Listview(),
-          //   ],
-          // ),
-        )
-        // ListView.builder(
-        //   itemCount: 10,
-        //   itemBuilder: (context, index) => ListTile(
-        //     // tileColor: Colors.tealAccent,
-        //     title: Text(
-        //"Test series ${index + 1}"),
-        //     onTap: () => Get.toNamed("/testScreen"),
-        //   ),
-        // ),
-        );
+  Widget _buildDrawerItem(IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Get.theme.colorScheme.primary),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+      onTap: onTap,
+    );
   }
 }
 
@@ -165,36 +107,68 @@ class Listview extends StatelessWidget {
     double _w = Get.width;
     return AnimationLimiter(
       child: ListView.builder(
-        // shrinkWrap: true,
-        padding: EdgeInsets.all(_w / 30),
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        padding: EdgeInsets.all(_w / 25),
+        physics: const BouncingScrollPhysics(),
         itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
           return AnimationConfiguration.staggeredList(
             position: index,
             delay: const Duration(milliseconds: 100),
             child: SlideAnimation(
-              duration: const Duration(milliseconds: 2500),
-              curve: Curves.fastLinearToSlowEaseIn,
-              horizontalOffset: -300,
-              verticalOffset: -850,
-              child: InkWell(
-                onTap: () => Get.toNamed(Rules.path),
-                child: Container(
+              verticalOffset: 50.0,
+              child: FadeInAnimation(
+                child: Card(
                   margin: EdgeInsets.only(bottom: _w / 20),
-                  height: _w / 4,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 40,
-                        spreadRadius: 10,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => Get.toNamed(Rules.path),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      height: 120,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: context.theme.colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              Icons.quiz_outlined,
+                              color: context.theme.colorScheme.primary,
+                              size: 30,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Test Series ${index + 1}",
+                                  style: context.textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "Chemistry Practice • 10 Questions",
+                                  style: context.textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: context.theme.colorScheme.primary.withOpacity(0.5),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                  child: Center(child: Text("Test series ${index + 1}")),
                 ),
               ),
             ),
