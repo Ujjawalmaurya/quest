@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       initialBinding: InitialBinding(),
       getPages: GetPages.pages,
       initialRoute: Storage.read(StorageKeys.username) == null ? LoginPage.path : HomePage.path,
-      title: 'QUESTion',
+      title: 'Shishya',
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       theme: QuestAppTheme.getTheme(accentColor, false),
       darkTheme: QuestAppTheme.getTheme(accentColor, true),

@@ -18,6 +18,8 @@ dependencies:
   get: ^4.6.6
   get_storage: ^2.1.1
   win32: ^5.15.0
+  kiosk_mode: ^0.8.0
+  safe_device: ^1.1.4
 
 dev_dependencies:
   flutter_lints: ^3.0.0
