@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:quest/binding/getPages.dart';
 import 'package:quest/screens/Home/home.dart';
 import 'package:quest/screens/Login/login.dart';
+import 'package:quest/binding/bindings.dart';
 import 'package:quest/src/utils/getStorage.dart';
 import 'package:quest/src/utils/theme.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     final Color accentColor = colorValue != null ? Color(colorValue) : Colors.deepPurple;
 
     return GetMaterialApp(
+      initialBinding: InitialBinding(),
       getPages: GetPages.pages,
       initialRoute: Storage.read(StorageKeys.username) == null ? LoginPage.path : HomePage.path,
       title: 'QUESTion',

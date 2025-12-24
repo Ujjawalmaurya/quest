@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quest/customWidgets/colorMEans.dart';
 
+import 'package:quest/screens/Home/home.dart';
 import 'package:quest/screens/resultScreen/resultController.dart';
 import 'package:quest/screens/test_provider/testController.dart';
 
@@ -12,27 +13,38 @@ class ShowResult extends GetView<ResultController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Performance Report"),
-      ),
-      body: Obx(
-        () => controller.isLoading.value
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    _buildSummaryCard(context),
-                    const SizedBox(height: 20),
-                    _buildTimeAnalysisGraph(context),
-                    const SizedBox(height: 20),
-                    _buildQuestionGrid(context),
-                    const SizedBox(height: 20),
-                  ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        Get.offAllNamed(HomePage.path);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Performance Report"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Get.offAllNamed(HomePage.path),
+          ),
+        ),
+        body: Obx(
+          () => controller.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      _buildSummaryCard(context),
+                      const SizedBox(height: 20),
+                      _buildTimeAnalysisGraph(context),
+                      const SizedBox(height: 20),
+                      _buildQuestionGrid(context),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }

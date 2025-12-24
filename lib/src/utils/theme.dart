@@ -8,10 +8,10 @@ class QuestAppTheme {
   static const Color lightSecondaryText = Color(0xFF42474E);
 
   // Dark Theme Colors
-  static const Color darkBg = Color(0xFF111318);
-  static const Color darkSurface = Color(0xFF1A1C1E);
-  static const Color darkPrimaryText = Color(0xFFE2E2E6);
-  static const Color darkSecondaryText = Color(0xFFC2C7CF);
+  static const Color darkBg = Color(0xFF0F1115);
+  static const Color darkSurface = Color(0xFF1B1E23);
+  static const Color darkPrimaryText = Color(0xFFF1F1F1);
+  static const Color darkSecondaryText = Color(0xFF9BA1A6);
 
   static ThemeData getTheme(Color accentColor, bool isDark) {
     final Color background = isDark ? darkBg : lightBg;
