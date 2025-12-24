@@ -5,6 +5,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager_plus/flutter_windowmanager_plus.dart';
 import 'package:get/get.dart';
+import 'package:kiosk_mode/kiosk_mode.dart';
+import 'package:safe_device/safe_device.dart';
 import 'package:quest/screens/resultScreen/resultScreen.dart';
 import 'package:quest/screens/test_provider/testScreen.dart';
 import 'package:quest/screens/settings/settingsController.dart';
@@ -13,13 +15,19 @@ import 'package:quest/src/constants/colors.dart';
 class TestController extends FullLifeCycleController with FullLifeCycleMixin {
   late Timer _timer;
   RxInt remainingTime = 600.obs; // 10 minutes in seconds
+  RxInt violationCount = 0.obs;
+  RxList<Map<String, dynamic>> auditLog = <Map<String, dynamic>>[].obs;
 
   DateTime? _questionStartTime;
+  StreamSubscription<KioskMode>? _kioskSubscription;
+  bool _isRestartingKiosk = false;
+  DateTime? _lastViolationTime;
 
   @override
   void onInit() {
     startTimer();
     _questionStartTime = DateTime.now();
+    _startIntegrityChecks();
     super.onInit();
   }
 
@@ -70,40 +78,127 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     switch (state) {
       case AppLifecycleState.resumed:
         log("App Resumed");
-        instantSubmit(); // Disabled auto-submit on resume for better UX and stability
         break;
       case AppLifecycleState.inactive:
         log("App InActive");
+        _recordViolation("App minimized or notification shade opened");
         break;
       case AppLifecycleState.paused:
         log("App Paused");
+        _recordViolation("App backgrounded");
         break;
       case AppLifecycleState.detached:
         log("App Detached");
         break;
       case AppLifecycleState.hidden:
-        // TODO: Handle this case.
         log("Lifecycle Hidden");
+        _recordViolation("App hidden");
         break;
     }
   }
 
+  void _recordViolation(String reason) {
+    // Debounce similar violations within 1 second
+    if (_lastViolationTime != null && DateTime.now().difference(_lastViolationTime!).inMilliseconds < 1000) {
+      return;
+    }
+
+    _lastViolationTime = DateTime.now();
+    violationCount.value++;
+    final timestamp = DateTime.now();
+    auditLog.add({
+      "time": "${timestamp.hour}:${timestamp.minute}:${timestamp.second}",
+      "reason": reason,
+    });
+    log("Violation: $reason. Count: ${violationCount.value}");
+
+    // Auto-submit on excessive violations (e.g., 3)
+    if (violationCount.value >= 3) {
+      _recordViolation("Auto-submitting due to repeated integrity violations");
+      instantSubmit();
+    }
+  }
+
+  void _startIntegrityChecks() {
+    // Periodic check for mock locations or developer options
+    Timer.periodic(const Duration(seconds: 30), (timer) async {
+      if (onCloseCalled) {
+        timer.cancel();
+        return;
+      }
+      bool isMockLocation = await SafeDevice.isMockLocation;
+      if (isMockLocation) {
+        _recordViolation("Mock location detected");
+      }
+
+      bool isDevelopmentMode = await SafeDevice.isDevelopmentModeEnable;
+      if (isDevelopmentMode) {
+        _recordViolation("Developer mode enabled");
+      }
+    });
+  }
+
+  bool onCloseCalled = false;
+
   @override
   void onReady() async {
     await FlutterWindowManagerPlus.addFlags(FlutterWindowManagerPlus.FLAG_SECURE);
+    _startLockdown();
     super.onReady();
   }
 
   @override
   void onClose() async {
+    onCloseCalled = true;
     _timer.cancel();
-    // WidgetsBinding.instance.removeObserver(TestScreen());
+    _stopLockdown();
     await FlutterWindowManagerPlus.clearFlags(FlutterWindowManagerPlus.FLAG_SECURE);
     super.onClose();
   }
 
+  Future<void> _startLockdown() async {
+    if (_isRestartingKiosk) return;
+    _isRestartingKiosk = true;
+    try {
+      final res = await startKioskMode();
+      log("Kiosk mode started: $res");
+
+      // Initialize listener only if not already listening
+      if (_kioskSubscription == null) {
+        _kioskSubscription = watchKioskMode().listen((state) {
+          if (state == KioskMode.disabled && !onCloseCalled) {
+            _handleKioskDisabled();
+          }
+        });
+      }
+    } catch (e) {
+      log("Error starting kiosk mode: $e");
+    } finally {
+      _isRestartingKiosk = false;
+    }
+  }
+
+  void _handleKioskDisabled() async {
+    // Cooldown check for kiosk violations
+    if (_lastViolationTime != null && DateTime.now().difference(_lastViolationTime!).inSeconds < 2) {
+      return;
+    }
+
+    _recordViolation("Kiosk mode deactivated manually");
+    await _startLockdown(); // Attempt to restart
+  }
+
+  Future<void> _stopLockdown() async {
+    try {
+      await _kioskSubscription?.cancel();
+      await stopKioskMode();
+      log("Kiosk mode stopped");
+    } catch (e) {
+      log("Error stopping kiosk mode: $e");
+    }
+  }
+
   int currentIndex = 0;
-  RxBool everResumed = false.obs;
   MCQ? selectedOption = MCQ.notselected;
 
   //
@@ -112,10 +207,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
       "questNo": "1",
       "question":
           "When a gas jar full of air is placed upside down on a gas jar full of bromine vapours, the red-brown vapours of bromine from the lower jar go upward into the jar containing air. In this experiment:",
-      "option_A": "Air is heavier than bromine",
-      "option_B": "Both air and bromine have the same density",
-      "option_C": "Bromine is heavier than air",
-      "option_D": "Bromine cannot be heavier than air because it is going upwards against gravity",
+      "A": "Air is heavier than bromine",
+      "B": "Both air and bromine have the same density",
+      "C": "Bromine is heavier than air",
+      "D": "Bromine cannot be heavier than air because it is going upwards against gravity",
       "correctAns": "C",
       "submittedAns": "",
       'isMarked': false
@@ -123,10 +218,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "2",
       "question": " When water at 0°C freezes to form ice at the same temperature of 0°C, then it:",
-      "option_A": "Absorbs some heat",
-      "option_B": "Releases some heat",
-      "option_C": "Neither absorbs nor releases heat",
-      "option_D": "Absorbs exactly 3.34 x 105J/kg of heat",
+      "A": "Absorbs some heat",
+      "B": "Releases some heat",
+      "C": "Neither absorbs nor releases heat",
+      "D": "Absorbs exactly 3.34 x 105J/kg of heat",
       "correctAns": "B",
       "submittedAns": "",
       'isMarked': false
@@ -134,10 +229,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "3",
       "question": "The evaporation of a liquid can best be carried out in a:",
-      "option_A": "Flask",
-      "option_B": "China dish",
-      "option_C": "Test tube",
-      "option_D": "Beaker",
+      "A": "Flask",
+      "B": "China dish",
+      "C": "Test tube",
+      "D": "Beaker",
       "correctAns": "B",
       "submittedAns": "",
       'isMarked': false
@@ -145,10 +240,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "4",
       "question": "Zig-zag movement of the solute particle in a solution is known as",
-      "option_A": "Linear motion",
-      "option_B": "Circular motion",
-      "option_C": "Brownian motion",
-      "option_D": "Curved motion",
+      "A": "Linear motion",
+      "B": "Circular motion",
+      "C": "Brownian motion",
+      "D": "Curved motion",
       "correctAns": "C",
       "submittedAns": "",
       'isMarked': false
@@ -156,10 +251,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "5",
       "question": "CO2 can be easily liquified and even solidified because",
-      "option_A": "It has weak forces of attraction",
-      "option_B": "It has comparatively more force of attraction than other gases",
-      "option_C": "It has more intermolecular space",
-      "option_D": "It is present in atmosphere.",
+      "A": "It has weak forces of attraction",
+      "B": "It has comparatively more force of attraction than other gases",
+      "C": "It has more intermolecular space",
+      "D": "It is present in atmosphere.",
       "correctAns": "B",
       "submittedAns": "",
       "isMarked": false
@@ -168,10 +263,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
       "questNo": "6",
       "question":
           " A few substances are arranged in the increasing order of ‘forces of attraction’ between their particles. Which one of the following represents a correct arrangement?",
-      "option_A": "Water, air, wind",
-      "option_B": "Air, sugar, oil",
-      "option_C": "Oxygen, water, sugar",
-      "option_D": "Salt, juice, air",
+      "A": "Water, air, wind",
+      "B": "Air, sugar, oil",
+      "C": "Oxygen, water, sugar",
+      "D": "Salt, juice, air",
       "correctAns": "C",
       "submittedAns": "",
       "isMarked": false
@@ -179,10 +274,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "7",
       "question": "Which of the following phenomena always results in the cooling effect?",
-      "option_A": "Condensation",
-      "option_B": "Evaporation",
-      "option_C": "Sublimation",
-      "option_D": "None of these",
+      "A": "Condensation",
+      "B": "Evaporation",
+      "C": "Sublimation",
+      "D": "None of these",
       "correctAns": "B",
       "submittedAns": "",
       "isMarked": false
@@ -190,10 +285,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "8",
       "question": "The colour of vapours formed on sublimation of iodine solid is:",
-      "option_A": "Purple (violet)",
-      "option_B": "Colourless",
-      "option_C": "Yellow",
-      "option_D": "Orange",
+      "A": "Purple (violet)",
+      "B": "Colourless",
+      "C": "Yellow",
+      "D": "Orange",
       "correctAns": "A",
       "submittedAns": "",
       "isMarked": false
@@ -201,10 +296,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "9",
       "question": "A gas which obeys the gas laws is known as:",
-      "option_A": "An ideal gas",
-      "option_B": "A heavier gas",
-      "option_C": "A lighter gas",
-      "option_D": "A real gas",
+      "A": "An ideal gas",
+      "B": "A heavier gas",
+      "C": "A lighter gas",
+      "D": "A real gas",
       "correctAns": "A",
       "submittedAns": "",
       "isMarked": false
@@ -212,10 +307,10 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     {
       "questNo": "10",
       "question": "What’s the term used to describe the phase change as a liquid becomes a solid?",
-      "option_A": "Evaporation",
-      "option_B": "Condensation",
-      "option_C": "Freezing",
-      "option_D": "None of the above",
+      "A": "Evaporation",
+      "B": "Condensation",
+      "C": "Freezing",
+      "D": "None of the above",
       "correctAns": "C",
       "submittedAns": "",
       "isMarked": false
@@ -225,8 +320,6 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
   void next() {
     _recordTime();
     _triggerHaptic();
-    log(everResumed.toString());
-    print("$currentIndex ${testMetaData.length}");
     if ((currentIndex + 1) < testMetaData.length) {
       currentIndex++;
       _updateSelectedOptionFromSubmitted();
@@ -292,33 +385,7 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     }
     Get.toNamed(ShowResult.path);
     update();
-  } //
-
-  // void readData() {
-  //   DatabaseReference starCountRef = FirebaseDatabase.instance.ref('posts/123/starCount');
-  //   starCountRef.onValue.listen((DatabaseEvent event) {
-  //     final data = event.snapshot.value;
-  //     print(data);
-  //   });
-  // }a
-
-  // void writeData() async {
-  //   DatabaseReference ref = FirebaseDatabase.instance.ref("users/123");
-  //   await ref.set({
-  //     "name": "John",
-  //     "age": 18,
-  //     "address": {"line1": "100 Mountain View"}
-  //   });
-  // }
-
-  // final ref = FirebaseDatabase.instance.ref();
-  //
-  // final snapshot = await ref.child('users/$userId').get();
-  // if (snapshot.exists) {
-  //   print(snapshot.value);
-  // } else {
-  //   print('No data available.');
-  // }
+  }
 
   void updateMCQSelection(MCQ value) {
     selectedOption = value;
