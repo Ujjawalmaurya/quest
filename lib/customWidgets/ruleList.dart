@@ -5,7 +5,7 @@ class RuleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bodyTxtStyle = Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.grey.shade700);
+    final bodyTxtStyle = Theme.of(context).textTheme.headlineSmall;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

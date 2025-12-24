@@ -12,7 +12,6 @@ class Rules extends GetWidget<RulesController> {
     // final headerTxtStyle = Theme.of(context).textTheme.displayMedium;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SizedBox(
         width: Get.width,
         child: SafeArea(

@@ -6,6 +6,13 @@ import 'package:quest/screens/rules_for_test/rulesController.dart';
 import 'package:quest/screens/test_provider/testController.dart';
 import 'package:quest/screens/settings/settingsController.dart';
 
+class InitialBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(SettingsController(), permanent: true);
+  }
+}
+
 class LoginBinding extends Bindings {
   @override
   void dependencies() {
@@ -16,7 +23,7 @@ class LoginBinding extends Bindings {
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    HomeController controller = Get.put(HomeController());
+    Get.put(HomeController());
   }
   //
 }
@@ -25,8 +32,7 @@ class TestBinding extends Bindings {
   @override
   void dependencies() {
     // Get.lazyPut<TestController>(() => TestController());
-    TestController controller = Get.put(TestController());
-    Get.lazyPut(() => SettingsController());
+    Get.put(TestController());
   }
   //
 }

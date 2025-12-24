@@ -70,7 +70,7 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     switch (state) {
       case AppLifecycleState.resumed:
         log("App Resumed");
-        // instantSubmit(); // Disabled auto-submit on resume for better UX and stability
+        instantSubmit(); // Disabled auto-submit on resume for better UX and stability
         break;
       case AppLifecycleState.inactive:
         log("App InActive");
@@ -229,10 +229,42 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
     print("$currentIndex ${testMetaData.length}");
     if ((currentIndex + 1) < testMetaData.length) {
       currentIndex++;
-      selectedOption = MCQ.notselected; // Reset selection locally
+      _updateSelectedOptionFromSubmitted();
       _questionStartTime = DateTime.now();
     } else {
       Get.toNamed(ShowResult.path);
+    }
+    update();
+  }
+
+  void _updateSelectedOptionFromSubmitted() {
+    String submitted = testMetaData[currentIndex]["submittedAns"];
+    switch (submitted) {
+      case 'A':
+        selectedOption = MCQ.a;
+        break;
+      case 'B':
+        selectedOption = MCQ.b;
+        break;
+      case 'C':
+        selectedOption = MCQ.c;
+        break;
+      case 'D':
+        selectedOption = MCQ.d;
+        break;
+      default:
+        selectedOption = MCQ.notselected;
+    }
+  }
+
+  void jumpToQuestion(int index) {
+    _recordTime();
+    _triggerHaptic();
+    currentIndex = index;
+    _updateSelectedOptionFromSubmitted();
+    _questionStartTime = DateTime.now();
+    if (Get.isBottomSheetOpen ?? false) {
+      Get.back();
     }
     update();
   }
@@ -252,8 +284,14 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
 
   void instantSubmit() {
     for (var i = currentIndex; i < testMetaData.length; i++) {
-      next();
+      _recordTime(); // Record time for each before finishing
+      if (i < testMetaData.length - 1) {
+        currentIndex = i + 1;
+        _questionStartTime = DateTime.now();
+      }
     }
+    Get.toNamed(ShowResult.path);
+    update();
   } //
 
   // void readData() {
@@ -372,19 +410,20 @@ class TestController extends FullLifeCycleController with FullLifeCycleMixin {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                         child: GetBuilder<TestController>(
-                          init: TestController(),
-                          initState: (_) {},
                           builder: (_) {
-                            return CircleAvatar(
-                              radius: 3.5,
-                              backgroundColor: _.testMetaData[i]["isMarked"]
-                                  ? Colors.redAccent
-                                  : _.testMetaData[i]["submittedAns"] != ''
-                                      ? QuizColors.green
-                                      : Colors.grey,
-                              child: Text(
-                                "${i + 1}",
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                            return InkWell(
+                              onTap: () => _.jumpToQuestion(i),
+                              child: CircleAvatar(
+                                radius: 3.5,
+                                backgroundColor: _.testMetaData[i]["isMarked"]
+                                    ? Colors.redAccent
+                                    : _.testMetaData[i]["submittedAns"] != ''
+                                        ? QuizColors.green
+                                        : Colors.grey,
+                                child: Text(
+                                  "${i + 1}",
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                                ),
                               ),
                             );
                           },
