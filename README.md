@@ -1,6 +1,6 @@
 # <center> Virtual Internship Project - Quest-Quiz App </center>
 
-## <center> Welcome to the Quiz App project 🚀
+## <center> Welcome to the Quiz App 🚀
 
 </center>
 
@@ -10,11 +10,19 @@ This Flutter and Dart-based Quiz App is designed to revolutionize the way studen
 
 ### Features
 
-**Quiz Participation:** Students can easily attempt quizzes or tests organized by administrators.
+- **Quiz Participation:** Students can easily attempt quizzes or tests organized by administrators.
 
-**Score Statistics:** Get detailed statistics at the end of each quiz to analyze performance and track progress.
+- **App Lockdown (Kiosk Mode):** Ensures focused participation by locking the device to the app, disabling home/recents buttons and system notifications during the test.
 
-**Auto-Submission:** Implemented a unique auto-submission feature to protect the app from unfair means. Even if the app is minimized or switched to another, the quiz remains secure.
+- **Gesture & Navigation Blocking:** Intercepts system back gestures and hardware buttons to prevent accidental or intentional exit from the active test.
+
+- **Advanced Anti-Cheat:** Features a secure screen that blocks screenshots and screen recording. The app also monitors integrity violations like app switching or mock locations.
+
+- **Score Statistics:** Get detailed statistics at the end of each quiz to analyze performance and track progress.
+
+- **Auto-Submission:** Ensures test integrity by automatically submitting the quiz if repeated violations are detected or if the time expires.
+
+- **Mentor Override Panel:** A protected panel for administrators to view violation audit trails and reset security flags if necessary.
 
 ### How to Use
 
